@@ -1,35 +1,45 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const InterviewArea = () => {
-  const[nextQuestion,setNextQuestion]=useState(0);
-  const location=useLocation();
-  const topic = location.state?.topic;
-  const questions=[
-    {id:1,
-      quest:"what is react"
-    },
-     {id:2,
-      quest:"what is HOOk"
-    },
-     {id:3,
-      quest:"what is useeffect"
-    }
-  ];
+  const [nextQuestion, setNextQuestion] = useState(0);
 
-  const handleNext=()=>{
-    if(nextQuestion<questions.length-1){
-setNextQuestion(nextQuestion+1)
+  const location = useLocation();
+  const topic = location.state?.topic;
+  const initialQuestions = location.state?.questions || [];
+  const [questions, setQuestions] = useState(initialQuestions);
+  const navigate = useNavigate();
+
+  const handleAnswer = (value) => {
+    const updateQuestions = [...questions];
+    updateQuestions[nextQuestion].answer = value;
+    setQuestions(updateQuestions);
+  };
+
+  const handleNext = () => {
+    if (nextQuestion < questions.length - 1) {
+      setNextQuestion(nextQuestion + 1);
     }
-    
-  }
+  };
+
+  const handleSubmit = async () => {
+   const response= await axios.post("http://localhost:5000/evaluate", {
+      interviewData: questions,
+    });
+
+    console.log("Serve REsponse",response.data);
+    navigate("/result", {
+      state: response.data,
+    });
+  };
 
   return (
     <div className="container ">
       <h4>{topic}</h4>
 
       <div className="interview-container">
-        <p>{questions[nextQuestion].quest}</p>
+        <p>{questions[nextQuestion]?.question}</p>
       </div>
       <div className="interview-container">
         <textarea
@@ -42,18 +52,29 @@ setNextQuestion(nextQuestion+1)
             border: "none",
             color: "white",
           }}
+          onChange={(e) => handleAnswer(e.target.value)}
         ></textarea>
       </div>
       <div class="d-grid ">
-        {nextQuestion===questions.length-1 ? <button class="btn btn-warning" type="button" style={{margin:"20px"}}>
-          submit
-        </button>:<button class="btn btn-success" type="button" style={{margin:"20px"}} onClick={handleNext}>
-          next
-        </button>  }
-        
-         
-        
-        
+        {nextQuestion === questions.length - 1 ? (
+          <button
+            class="btn btn-warning"
+            type="button"
+            style={{ margin: "20px" }}
+            onClick={handleSubmit}
+          >
+            submit
+          </button>
+        ) : (
+          <button
+            class="btn btn-success"
+            type="button"
+            style={{ margin: "20px" }}
+            onClick={handleNext}
+          >
+            next
+          </button>
+        )}
       </div>
     </div>
   );

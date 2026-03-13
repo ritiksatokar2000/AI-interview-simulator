@@ -1,19 +1,38 @@
+
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const Home = () => {
   const[topic,setTopic]=useState();
   const topicElement =useRef();
   const navigate = useNavigate();
 
-  const handleTopic=() =>{
-    const selectedTopic = topicElement.current.value
-    navigate("/interview",{
-      state:{topic:selectedTopic}
-    })
-    
 
+  const handleTopic= async() =>{
+    const selectedTopic = topicElement.current.value
+    
+    const response = await axios.post(
+      "http://localhost:5000/generate-questions",
+      {role:selectedTopic}
+    );
+    
+    const questions = response.data.questions.map((q,index) => ({
+      id:index + 1,
+      question:q,
+      answer:""
+    }));
+    
+    navigate("/interview",{
+      state:{
+        topic:selectedTopic,
+        questions:questions
+      }
+    })
   }
+
+  
 
   return (
     <div className="container home-container">
