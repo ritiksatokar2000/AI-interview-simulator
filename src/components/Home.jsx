@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 
 const Home = () => {
   const topicElement =useRef();
@@ -13,7 +15,7 @@ const Home = () => {
     const selectedTopic = topicElement.current.value
     
     const response = await axios.post(
-      "http://localhost:5000/generate-questions",
+      `${baseUrl}/generate-questions`,
       {role:selectedTopic}
     );
     

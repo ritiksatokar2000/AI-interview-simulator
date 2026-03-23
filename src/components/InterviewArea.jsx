@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
 const InterviewArea = () => {
   const [nextQuestion, setNextQuestion] = useState(0);
 
@@ -24,7 +26,7 @@ const InterviewArea = () => {
   };
 
   const handleSubmit = async () => {
-   const response= await axios.post("http://localhost:5000/evaluate", {
+   const response= await axios.post(`${baseUrl}/evaluate`, {
       interviewData: questions,
     });
 
