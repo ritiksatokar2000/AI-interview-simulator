@@ -1,8 +1,17 @@
-const{GoogleGenerativeAI}=require("@google/generative-ai")
-const genAI = new GoogleGenerativeAI("Enter your API");
+require("dotenv").config();
 
+const{GoogleGenerativeAI}=require("@google/generative-ai")
 const express = require("express")
 const cors = require("cors");
+
+const apiKey = process.env.GEMINI_API_KEY
+
+if(!apiKey){
+  console.error("GEMINI_API_KEY is missing in .env");
+  process.exit(1);
+}
+
+const genAI = new GoogleGenerativeAI(apiKey);
 
 const app =express();
 
