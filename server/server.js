@@ -68,8 +68,8 @@ app.post("/evaluate", async(req,res) => {
 
 })
 
+const PORT = process.env.PORT || 5000;
 
-
-app.listen(5000,() => {
+app.listen(PORT,() => {
   console.log("server unning on post 5000 http://localhost:5000");
 })
