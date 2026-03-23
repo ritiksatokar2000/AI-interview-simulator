@@ -5,7 +5,6 @@ import axios from "axios";
 
 
 const Home = () => {
-  const[topic,setTopic]=useState();
   const topicElement =useRef();
   const navigate = useNavigate();
 
@@ -51,6 +50,7 @@ const Home = () => {
           <option value="React Devloper">React Devloper</option>
           <option value="Ai Devloper">Ai Devloper</option>
           <option value="Data Analyst">Data Analyst</option>
+          <option value="Data Analyst">Product Manager</option>
         </select>
       </div>
       <button type="button" class="btn btn-success" onClick={handleTopic} >Ask Question</button>

@@ -1,14 +1,16 @@
+import { Link } from "react-router-dom";
+
 const Header = () => {
   return (
     <div class="container nav-div">
       <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container d-flex justify-content-around">
-          <a class="navbar-brand" href="#">
-            Navbar
-          </a>
+          <Link class="navbar-brand" to="/">
+            Home
+          </Link>
           <div className="d-flex">
-            <a className="nav-link p-2"> Home</a>
-            <a className="nav-link p-2">Result</a>
+            <Link className="nav-link p-2" to="/result"> Result</Link>
+           
           </div>
         </div>
       </nav>

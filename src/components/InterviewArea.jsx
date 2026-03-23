@@ -52,6 +52,7 @@ const InterviewArea = () => {
             border: "none",
             color: "white",
           }}
+          value={questions[nextQuestion]?.answer || ""}
           onChange={(e) => handleAnswer(e.target.value)}
         ></textarea>
       </div>
