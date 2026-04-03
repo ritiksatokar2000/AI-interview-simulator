@@ -2,7 +2,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import LodingPage from "./LodingPage";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -69,7 +68,6 @@ const Home = () => {
       <button type="button" class="btn btn-success" onClick={handleTopic} disabled={loading}>
         {loading ? "loading" : "Ask Question"}
        </button>
-       {loading && <LodingPage />}
       </center>
     </div>
   );
