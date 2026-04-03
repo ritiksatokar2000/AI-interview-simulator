@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import LodingPage from "./LodingPage";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -9,12 +10,15 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL;
 const Home = () => {
   const topicElement =useRef();
   const navigate = useNavigate();
+  const [loading ,setLoding] = useState(false)
 
 
   const handleTopic= async() =>{
     const selectedTopic = topicElement.current.value
-    
-    const response = await axios.post(
+
+    try {
+      setLoding(true);
+      const response = await axios.post(
       `${baseUrl}/generate-questions`,
       {role:selectedTopic}
     );
@@ -31,6 +35,13 @@ const Home = () => {
         questions:questions
       }
     })
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoding(false);
+    }
+
   }
 
   
@@ -55,7 +66,10 @@ const Home = () => {
           <option value="Data Analyst">Product Manager</option>
         </select>
       </div>
-      <button type="button" class="btn btn-success" onClick={handleTopic} >Ask Question</button>
+      <button type="button" class="btn btn-success" onClick={handleTopic} disabled={loading}>
+        {loading ? "loading" : "Ask Question"}
+       </button>
+       {loading && <LodingPage />}
       </center>
     </div>
   );

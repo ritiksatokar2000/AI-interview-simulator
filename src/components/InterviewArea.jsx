@@ -5,6 +5,8 @@ import axios from "axios";
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const InterviewArea = () => {
+  const [loading, setLoding] = useState(false);
+
   const [nextQuestion, setNextQuestion] = useState(0);
 
   const location = useLocation();
@@ -26,14 +28,21 @@ const InterviewArea = () => {
   };
 
   const handleSubmit = async () => {
-   const response= await axios.post(`${baseUrl}/evaluate`, {
-      interviewData: questions,
-    });
+    try {
+      setLoding(true)
+      const response = await axios.post(`${baseUrl}/evaluate`, {
+        interviewData: questions,
+      });
 
-    console.log("Serve REsponse",response.data);
-    navigate("/result", {
-      state: response.data,
-    });
+      console.log("Serve REsponse", response.data);
+      navigate("/result", {
+        state: response.data,
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoding(false)
+    }
   };
 
   return (
@@ -65,8 +74,9 @@ const InterviewArea = () => {
             type="button"
             style={{ margin: "20px" }}
             onClick={handleSubmit}
-          >
-            submit
+            disabled={loading}
+          > {loading ? "Evaluating Answer" : " submit"}
+           
           </button>
         ) : (
           <button
